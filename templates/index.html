@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurante</title>
+
+    <!-- CSS externo -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+    <h1>{{ restaurante.nombre }}</h1>
+    <nav>
+        <a href="/">Inicio</a>
+        <a href="#">Menú</a>
+        <a href="#">Contacto</a>
+    </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <h2>{{ restaurante.eslogan }}</h2>
+
+    <!-- 🔥 PORTADA (SOLUCIÓN DEFINITIVA) -->
+    <img src="/static/img/{{ restaurante.imagen_portada.split('/')[-1] }}" width="400">
+
+    <p>{{ restaurante.descripcion }}</p>
+</section>
+
+<!-- FILTRO POR FECHA -->
+<form method="get">
+    <label>Selecciona una fecha:</label>
+    <input type="date" name="fecha" required>
+    <button type="submit">Buscar</button>
+</form>
+
+<!-- RESULTADO -->
+{% if fecha %}
+    <h2 style="text-align:center;">Menú para {{ fecha }}</h2>
+
+    <div class="menu">
+
+        <!-- 🔁 LOOP -->
+        {% for plato in menu %}
+            <div class="card">
+                <h3>{{ plato.nombre_plato }}</h3>
+
+                <!-- 🔥 IMAGEN ARREGLADA -->
+                <img src="/static/img/{{ plato.imagen.split('/')[-1] }}">
+
+                <p>{{ plato.descripcion }}</p>
+                <p><b>Categoría:</b> {{ plato.categoria }}</p>
+                <p><b>Precio:</b> Bs {{ plato.precio }}</p>
+            </div>
+        {% endfor %}
+
+    </div>
+
+    {% if menu|length == 0 %}
+        <p style="text-align:center;">No hay menú para esta fecha</p>
+    {% endif %}
+{% endif %}
+
+<!-- FOOTER -->
+<footer>
+    <p>© 2026 Restaurante</p>
+</footer>
+
+</body>
+</html>
